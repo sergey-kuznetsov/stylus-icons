@@ -1,0 +1,52 @@
+startR = 255
+startG = 0
+startB = 0
+
+endR = 150
+endG = 0
+endB = 255
+
+count = 10
+
+
+test(start, end, iteration)
+  if start > end
+    start - ((start - end) / count * iteration)
+  else
+    (end - start) / count * iteration
+
+
+color = rgb(
+        test(startR,endR,1),
+        test(startG,endG,1),
+        test(startB,endB,1)
+)
+.owl
+  background-color color
+  background-image url('/pasted-graphic1.png')
+  width 100px
+  height 100px
+  float left // По горизонтали смотреть удобнее чем по вертикали, доабвли чисто для этого
+
+for num in 2..count
+  color = rgb(
+          test(startR,endR,num),
+          test(startG,endG,num),
+          test(startB,endB,num)
+  )
+  .owl-{num}
+    @extend .owl
+    background-image url('/pasted-graphic2.png')
+    background-color color
+    position relative
+    width 102px // у разных картинок немного разный размер
+    height 102px
+
+  .owl-{num}:before
+    position absolute
+    content ""+num
+    left num >= 10 ? 70px : 76px
+    top 70px
+    font-size 20px
+    font-weight bold
+    color color

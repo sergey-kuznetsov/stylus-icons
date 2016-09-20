@@ -1,0 +1,24 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.10",
+    "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "static-server": "^2.0.3",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.3.1",
+    "webpack": "^1.13.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "s": "node server.js",
+    "w": "webpack --config webpack.config.js",
+    "w:w": "webpack --config webpack.config.js --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
