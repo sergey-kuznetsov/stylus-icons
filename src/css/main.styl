@@ -7,46 +7,95 @@ endG = 0
 endB = 255
 
 count = 10
+fntPath = '/fonts/glyphicons-halflings-regular'
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(fntPath + '.eot');
+  src: url(fntPath + '.eot?#iefix') format('embedded-opentype'),
+       url(fntPath + '.woff2') format('woff2'),
+       url(fntPath + '.woff') format('woff'),
+       url(fntPath + '.ttf') format('truetype'),
+       url(fntPath + '.svg#glyphicons_halflingsregular') format('svg');
+}
 
-
-test(start, end, iteration)
+getColor(start, end, iteration)
   if start > end
     start - ((start - end) / count * iteration)
   else
     (end - start) / count * iteration
 
-
-color = rgb(
-        test(startR,endR,1),
-        test(startG,endG,1),
-        test(startB,endB,1)
-)
-.owl
-  background-color color
-  background-image url('/pasted-graphic1.png')
-  width 100px
-  height 100px
-  float left // По горизонтали смотреть удобнее чем по вертикали, доабвли чисто для этого
-
-for num in 2..count
-  color = rgb(
-          test(startR,endR,num),
-          test(startG,endG,num),
-          test(startB,endB,num)
-  )
-  .owl-{num}
-    @extend .owl
-    background-image url('/pasted-graphic2.png')
-    background-color color
-    position relative
-    width 102px // у разных картинок немного разный размер
-    height 102px
-
-  .owl-{num}:before
-    position absolute
-    content ""+num
-    left num >= 10 ? 70px : 76px
-    top 70px
-    font-size 20px
-    font-weight bold
-    color color
+for size in (300 200 100)
+  width = (size)px
+  height = (size)px
+    
+  for num in 1..count
+    borderWidth = (size*0.04)px
+    numPostfix = (num != 1 ? '-'+num : '')
+    if size == 300
+      className = '.icon-l' + numPostfix
+    if size == 200
+      className = '.icon-m' + numPostfix
+    if size == 100
+      className = '.icon-s' + numPostfix
+    
+    color = rgb(
+      getColor(startR,endR,num),
+      getColor(startG,endG,num),
+      getColor(startB,endB,num)
+    )
+    backgroundColor = #ffffff // пока не придумал, как сделать фон (мсенно механизм определения цвета, но думаю чуть позже я с этим разберусь)
+    
+    {className}
+      width width - borderWidth*2
+      height height - borderWidth*2
+      background-color backgroundColor
+      position relative
+      float:left
+  
+      border-radius 100%
+      border-width borderWidth
+      border-color color
+      border-style solid
+  
+      fontSize = (height - borderWidth*2)*0.90
+      correctX = fontSize * 0.05  
+      correctY = fontSize * 0.08
+      text-align:  center;
+      font-family 'Glyphicons Halflings'
+      font-size fontSize 
+      line-height fontSize * 1.15
+      color color
+    
+    if num != 1
+      {className}:after 
+        content '' + num
+        position absolute
+        font-size height * 0.15
+        top height * 0.33
+        left width * (num < 10 ? 0.78 : 0.75)
+        font-weight bold
+        color color
+    
+    
+      {className}:before
+        @extend {className}
+        localWidth = width/2 - borderWidth*2
+        localHeight = height/2 - borderWidth*2
+        content ''
+        display block
+        width localWidth
+        height localHeight
+        background-color backgroundColor
+        
+        clip rect(
+          0,
+          localWidth + borderWidth*2,
+          localHeight + borderWidth*2,
+          (localWidth/ 2)*0.93
+        )
+    
+        transform rotate(45deg);
+        position absolute
+        coefficient = 0.54
+        left width*coefficient
+        top height*coefficient
